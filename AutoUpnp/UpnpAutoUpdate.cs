@@ -40,26 +40,41 @@ namespace AutoUpnp
         {
             while (true)
             {
-                Check(device, 80);
-                Check(device, 443);
+                Check(device, 80, Protocol.Tcp);
+                Check(device, 443, Protocol.Tcp);
+                Check(device, 51820, Protocol.Udp);
+                Check(device, 19132, Protocol.Udp);
+                Check(device, 19133, Protocol.Udp);
+
+                //Dayz
+                Check(device, 2302, Protocol.Udp);
+                Check(device, 2303, Protocol.Udp);
+                Check(device, 2304, Protocol.Udp);
+                Check(device, 2305, Protocol.Udp);
+                Check(device, 27016, Protocol.Udp);
+
+
                 Thread.Sleep(1000);
             }
         }
 
-        void Check(INatDevice device, int port)
+        void Check(INatDevice device, int port, Protocol protocol)
         {
             try
             {
-                var mapping = device.GetAllMappings().Where(p => p.PublicPort == port && p.Protocol == Protocol.Tcp);
+                var mapping = device.GetAllMappings().Where(p => p.PublicPort == port && p.Protocol == protocol);
 
                 if (mapping != null && mapping.Any())
                     return;
 
-                device.CreatePortMap(new Mapping(Protocol.Tcp, port, port, 0, "Justin Computer Webserver"));
+                var newMapping = device.CreatePortMap(new Mapping(protocol, port, port, 900, "Justin Computer Webserver"));
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                if (ex.Message != "Unexpected error sending a message to the device")
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
     }
