@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using AutoUpnp;
-using Mono.Nat;
+using System;
+using System.Threading;
 
 Console.WriteLine("Hello, World!");
 
