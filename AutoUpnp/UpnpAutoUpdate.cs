@@ -48,7 +48,6 @@ namespace AutoUpnp
                 await CheckAsync(device, 51820, Protocol.Udp);
                 await CheckAsync(device, 19132, Protocol.Udp);
                 await CheckAsync(device, 19133, Protocol.Udp);
-                await CheckAsync(device, 27017, Protocol.Tcp);
 
 
                 Thread.Sleep(1000);
